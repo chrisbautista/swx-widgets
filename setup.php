@@ -17,13 +17,6 @@
 	)
  * 
  **/
-$options = array();
+$site_options = array();
+$site_options[] = 'Site Options';
 
-$options[] = array(
-		'page_title' 	=> 'Site Options',
-		'menu_title' 	=> 'Site Options',
-		'capability' 	=> 'edit_posts',
-	);
-
-
-define('SITE_OPTIONS', $options);

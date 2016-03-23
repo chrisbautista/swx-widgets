@@ -43,7 +43,7 @@ function roots_wrap_info() {
 /*-----------------------------------------------------------------------------------*/
 
 require_once (SWX_FILEPATH . '/setup.php');
-require_once (SWX_FILEPATH . '/functions/class-acf-options.php');
+require_once (SWX_FILEPATH . '/functions/class-acf-options-page.php');
 
 
 /*-----------------------------------------------------------------------------------*/
