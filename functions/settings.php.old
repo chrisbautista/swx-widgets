@@ -1,0 +1,505 @@
+<?php
+/**
+ * _s Theme Options
+ * https://gist.github.com/mfields/4678999
+ * @package _s
+ * @since _s 1.0
+ */
+
+/**
+ * Register the form setting for our _s_options array.
+ *
+ * This function is attached to the admin_init action hook.
+ *
+ * This call to register_setting() registers a validation callback, _s_theme_options_validate(),
+ * which is used when the option is saved, to ensure that our option values are properly
+ * formatted, and safe.
+ *
+ * @since _s 1.0
+ */
+function _s_theme_options_init() {
+	register_setting(
+		'_s_options', // Options group, see settings_fields() call in _s_theme_options_render_page()
+		'_s_theme_options', // Database option, see _s_get_theme_options()
+		'_s_theme_options_validate' // The sanitization callback, see _s_theme_options_validate()
+	);
+
+	// Register our settings field group
+	add_settings_section(
+		'general', // Unique identifier for the settings section
+		'', // Section title (we don't want one)
+		'__return_false', // Section callback (we don't want anything)
+		'theme_options' // Menu slug, used to uniquely identify the page; see _s_theme_options_add_page()
+	);
+	/*
+	add_settings_section(
+		'homepage', // Unique identifier for the settings section
+		'Homepage', // Section title (we don't want one)
+		'__return_false', // Section callback (we don't want anything)
+		'theme_options_homepage' // Menu slug, used to uniquely identify the page; see _s_theme_options_add_page()
+	);
+
+	// Register our individual settings fields
+	add_settings_field(
+		'sample_checkbox', // Unique identifier for the field for this section
+		__( 'Sample Checkbox', '_s' ), // Setting field label
+		'_s_settings_field_sample_checkbox', // Function that renders the settings field
+		'theme_options', // Menu slug, used to uniquely identify the page; see _s_theme_options_add_page()
+		'general' // Settings section. Same as the first argument in the add_settings_section() above
+	);
+*/
+	/*
+	add_settings_field( 'sample_text_input', __( 'Sample Text Input', '_s' ), '_s_settings_field_sample_text_input', 'theme_options', 'general' );
+	add_settings_field( 'sample_select_options', __( 'Sample Select Options', '_s' ), '_s_settings_field_sample_select_options', 'theme_options', 'general' );
+	add_settings_field( 'sample_radio_buttons', __( 'Sample Radio Buttons', '_s' ), '_s_settings_field_sample_radio_buttons', 'theme_options', 'general' );
+	add_settings_field( 'sample_textarea', __( 'Sample Textarea', '_s' ), '_s_settings_field_sample_textarea', 'theme_options', 'general' );
+	*/
+
+	add_settings_field( 'what_we_do_1', __( 'What We Do Page ID #1', '_s' ), '_s_settings_what_we_do_1', 'theme_options', 'general' );
+	add_settings_field( 'what_we_do_2', __( 'What We Do Page ID #2', '_s' ), '_s_settings_what_we_do_2', 'theme_options', 'general' );
+	add_settings_field( 'what_we_do_3', __( 'What We Do Page ID #3', '_s' ), '_s_settings_what_we_do_3', 'theme_options', 'general' );
+	add_settings_field( 'what_we_do_4', __( 'What We Do Page ID #4', '_s' ), '_s_settings_what_we_do_4', 'theme_options', 'general' );
+
+	add_settings_field( 'industries1', __( 'Industries #1', '_s' ), '_s_settings_industries1', 'theme_options', 'general' );
+	add_settings_field( 'industries2', __( 'Industries #2', '_s' ), '_s_settings_industries2', 'theme_options', 'general' );
+	add_settings_field( 'industries3', __( 'Industries #3', '_s' ), '_s_settings_industries3', 'theme_options', 'general' );
+
+	add_settings_field( 'qty_per_page', __( 'Number of Events, News and Insights on Homepage', '_s' ), '_s_settings_qty_per_page', 'theme_options', 'general' );
+	add_settings_field( 'resource_mapping', __( 'Map Resource Categories to Page Slugs', '_s' ), '_s_settings_resource_mapping', 'theme_options', 'general' );
+
+	
+	
+}
+add_action( 'admin_init', '_s_theme_options_init' );
+
+/**
+ * Change the capability required to save the '_s_options' options group.
+ *
+ * @see _s_theme_options_init() First parameter to register_setting() is the name of the options group.
+ * @see _s_theme_options_add_page() The edit_theme_options capability is used for viewing the page.
+ *
+ * @param string $capability The capability used for the page, which is manage_options by default.
+ * @return string The capability to actually use.
+ */
+function _s_option_page_capability( $capability ) {
+	return 'edit_theme_options';
+}
+add_filter( 'option_page_capability__s_options', '_s_option_page_capability' );
+
+/**
+ * Add our theme options page to the admin menu.
+ *
+ * This function is attached to the admin_menu action hook.
+ *
+ * @since _s 1.0
+ */
+function _s_theme_options_add_page() {
+	$theme_page = add_theme_page(
+		__( 'Site Options', '_s' ),   // Name of page
+		__( 'Site Options', '_s' ),   // Label in menu
+		'edit_theme_options',          // Capability required
+		'theme_options',               // Menu slug, used to uniquely identify the page
+		'_s_theme_options_render_page' // Function that renders the options page
+	);
+}
+add_action( 'admin_menu', '_s_theme_options_add_page' );
+
+/**
+ * Returns an array of sample select options registered for _s.
+ *
+ * @since _s 1.0
+ */
+function _s_sample_select_options() {
+	$sample_select_options = array(
+		'0' => array(
+			'value' =>	'0',
+			'label' => __( 'Zero', '_s' )
+		),
+		'1' => array(
+			'value' =>	'1',
+			'label' => __( 'One', '_s' )
+		),
+		'2' => array(
+			'value' => '2',
+			'label' => __( 'Two', '_s' )
+		),
+		'3' => array(
+			'value' => '3',
+			'label' => __( 'Three', '_s' )
+		),
+		'4' => array(
+			'value' => '4',
+			'label' => __( 'Four', '_s' )
+		),
+		'5' => array(
+			'value' => '5',
+			'label' => __( 'Five', '_s' )
+		)
+	);
+
+	return apply_filters( '_s_sample_select_options', $sample_select_options );
+}
+
+/**
+ * Returns an array of sample radio options registered for _s.
+ *
+ * @since _s 1.0
+ */
+function _s_sample_radio_buttons() {
+	$sample_radio_buttons = array(
+		'yes' => array(
+			'value' => 'yes',
+			'label' => __( 'Yes', '_s' )
+		),
+		'no' => array(
+			'value' => 'no',
+			'label' => __( 'No', '_s' )
+		),
+		'maybe' => array(
+			'value' => 'maybe',
+			'label' => __( 'Maybe', '_s' )
+		)
+	);
+
+	return apply_filters( '_s_sample_radio_buttons', $sample_radio_buttons );
+}
+
+/**
+ * Returns the options array for _s.
+ *
+ * @since _s 1.0
+ */
+function _s_get_theme_options() {
+	$saved = (array) get_option( '_s_theme_options' );
+	$defaults = array(
+		'sample_checkbox'       => 'off',
+		'sample_text_input'     => '',
+		'what_we_do_1'     => '',
+		'what_we_do_2'     => '',
+		'what_we_do_3'     => '',
+		'what_we_do_4'     => '',
+		'industries1'     => '',
+		'industries2'     => '',
+		'industries3'     => '',
+		'qty_per_page'     => '',
+		'resource_mapping'     => '',
+		'sample_select_options' => '',
+		'sample_radio_buttons'  => '',
+		'sample_textarea'       => '',
+	);
+
+	$defaults = apply_filters( '_s_default_theme_options', $defaults );
+
+	$options = wp_parse_args( $saved, $defaults );
+	$options = array_intersect_key( $options, $defaults );
+
+	return $options;
+}
+
+/**
+ * Renders the sample checkbox setting field.
+ */
+function _s_settings_field_sample_checkbox() {
+	$options = _s_get_theme_options();
+	?>
+	<label for="sample-checkbox">
+		<input type="checkbox" name="_s_theme_options[sample_checkbox]" id="sample-checkbox" <?php checked( 'on', $options['sample_checkbox'] ); ?> />
+		<?php _e( 'A sample checkbox.', '_s' ); ?>
+	</label>
+	<?php
+}
+
+/**
+ * Renders the sample text input setting field.
+ */
+function _s_settings_field_sample_text_input() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[sample_text_input]" id="sample-text-input" value="<?php echo esc_attr( $options['sample_text_input'] ); ?>" />
+	<label class="description" for="sample-text-input"><?php _e( 'Sample text input', '_s' ); ?></label>
+	<?php
+}
+
+
+/**
+ * CUSTOM
+ */
+ 
+function _s_settings_what_we_do_1() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[what_we_do_1]" id="what-we-do-1" value="<?php echo esc_attr( $options['what_we_do_1'] ); ?>" />
+	<label class="description" for="what-we-do-1"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+function _s_settings_what_we_do_2() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[what_we_do_2]" id="what-we-do-2" value="<?php echo esc_attr( $options['what_we_do_2'] ); ?>" />
+	<label class="description" for="what-we-do-2"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+function _s_settings_what_we_do_3() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[what_we_do_3]" id="what-we-do-3" value="<?php echo esc_attr( $options['what_we_do_3'] ); ?>" />
+	<label class="description" for="what-we-do-3"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+function _s_settings_what_we_do_4() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[what_we_do_4]" id="what-we-do-4" value="<?php echo esc_attr( $options['what_we_do_4'] ); ?>" />
+	<label class="description" for="what-we-do-4"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+
+function _s_settings_industries1() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[industries1]" id="industries1" value="<?php echo esc_attr( $options['industries1'] ); ?>" />
+	<label class="description" for="industries1"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+
+
+function _s_settings_industries2() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[industries2]" id="industries2" value="<?php echo esc_attr( $options['industries2'] ); ?>" />
+	<label class="description" for="industries2"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+
+function _s_settings_industries3() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[industries3]" id="industries3" value="<?php echo esc_attr( $options['industries3'] ); ?>" />
+	<label class="description" for="industries3"><?php _e( 'EG: 7367', '_s' ); ?></label>
+	<?php
+}
+
+function _s_settings_qty_per_page() {
+	$options = _s_get_theme_options();
+	?>
+	<input type="text" name="_s_theme_options[qty_per_page]" id="qty_per_page" value="<?php echo esc_attr( $options['qty_per_page'] ); ?>" />
+	<label class="description" for="qty_per_page"><?php _e( 'EG: 3', '_s' ); ?></label>
+	<?php
+}
+
+function _s_settings_resource_mapping() {
+	$options = _s_get_theme_options();
+	?>
+	<textarea class="large-text" type="text" name="_s_theme_options[resource_mapping]" id="resource_mapping" cols="50" rows="10" /><?php echo esc_textarea( $options['resource_mapping'] ); ?></textarea>
+	<label class="description" for="resource_mapping"><?php _e( 'Override the array used to define relationships between Download Monitor (resource) categories and page slugs which defines which resources show up on which pages automatically.', '_s' ); ?></label>
+	<?php
+}
+
+
+
+
+/**
+ * Renders the sample select options setting field.
+ */
+function _s_settings_field_sample_select_options() {
+	$options = _s_get_theme_options();
+	?>
+	<select name="_s_theme_options[sample_select_options]" id="sample-select-options">
+		<?php
+			$selected = $options['sample_select_options'];
+			$p = '';
+			$r = '';
+
+			foreach ( _s_sample_select_options() as $option ) {
+				$label = $option['label'];
+				if ( $selected == $option['value'] ) // Make default first in list
+					$p = "\n\t<option style=\"padding-right: 10px;\" selected='selected' value='" . esc_attr( $option['value'] ) . "'>$label</option>";
+				else
+					$r .= "\n\t<option style=\"padding-right: 10px;\" value='" . esc_attr( $option['value'] ) . "'>$label</option>";
+			}
+			echo $p . $r;
+		?>
+	</select>
+	<label class="description" for="sample_theme_options[selectinput]"><?php _e( 'Sample select input', '_s' ); ?></label>
+	<?php
+}
+
+/**
+ * Renders the radio options setting field.
+ *
+ * @since _s 1.0
+ */
+function _s_settings_field_sample_radio_buttons() {
+	$options = _s_get_theme_options();
+
+	foreach ( _s_sample_radio_buttons() as $button ) {
+	?>
+	<div class="layout">
+		<label class="description">
+			<input type="radio" name="_s_theme_options[sample_radio_buttons]" value="<?php echo esc_attr( $button['value'] ); ?>" <?php checked( $options['sample_radio_buttons'], $button['value'] ); ?> />
+			<?php echo $button['label']; ?>
+		</label>
+	</div>
+	<?php
+	}
+}
+
+/**
+ * Renders the sample textarea setting field.
+ */
+function _s_settings_field_sample_textarea() {
+	$options = _s_get_theme_options();
+	?>
+	<textarea class="large-text" type="text" name="_s_theme_options[sample_textarea]" id="sample-textarea" cols="50" rows="10" /><?php echo esc_textarea( $options['sample_textarea'] ); ?></textarea>
+	<label class="description" for="sample-textarea"><?php _e( 'Sample textarea', '_s' ); ?></label>
+	<?php
+}
+
+/**
+ * Renders the Theme Options administration screen.
+ *
+ * @since _s 1.0
+ */
+function _s_theme_options_render_page() {
+	?>
+	<div class="wrap">
+		<?php screen_icon(); ?>
+		<?php $theme_name = function_exists( 'wp_get_theme' ) ? wp_get_theme() : get_current_theme(); ?>
+		<h2><?php printf( __( '%s Theme Options', '_s' ), $theme_name ); ?></h2>
+		<?php settings_errors(); ?>
+
+		<form method="post" action="options.php">
+			<?php
+				settings_fields( '_s_options' );
+				do_settings_sections( 'theme_options' );
+				submit_button();
+			?>
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * Sanitize and validate form input. Accepts an array, return a sanitized array.
+ *
+ * @see _s_theme_options_init()
+ * @todo set up Reset Options action
+ *
+ * @param array $input Unknown values.
+ * @return array Sanitized theme options ready to be stored in the database.
+ *
+ * @since _s 1.0
+ */
+function _s_theme_options_validate( $input ) {
+	$output = array();
+
+	
+	
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['what_we_do_1'] ) && ! empty( $input['what_we_do_1'] ) )
+		$output['what_we_do_1'] = wp_filter_nohtml_kses( $input['what_we_do_1'] );
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['what_we_do_2'] ) && ! empty( $input['what_we_do_2'] ) )
+		$output['what_we_do_2'] = wp_filter_nohtml_kses( $input['what_we_do_2'] );
+
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['what_we_do_3'] ) && ! empty( $input['what_we_do_3'] ) )
+		$output['what_we_do_3'] = wp_filter_nohtml_kses( $input['what_we_do_3'] );
+
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['what_we_do_4'] ) && ! empty( $input['what_we_do_4'] ) )
+		$output['what_we_do_4'] = wp_filter_nohtml_kses( $input['what_we_do_4'] );
+
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['industries1'] ) && ! empty( $input['industries1'] ) )
+		$output['industries1'] = wp_filter_nohtml_kses( $input['industries1'] );
+
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['industries2'] ) && ! empty( $input['industries2'] ) )
+		$output['industries2'] = wp_filter_nohtml_kses( $input['industries2'] );
+		
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['industries3'] ) && ! empty( $input['industries3'] ) )
+		$output['industries3'] = wp_filter_nohtml_kses( $input['industries3'] );
+
+		// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['qty_per_page'] ) && ! empty( $input['qty_per_page'] ) )
+		$output['qty_per_page'] = wp_filter_nohtml_kses( $input['qty_per_page'] );
+
+		
+	// The sample textarea must be safe text with the allowed tags for posts
+	if ( isset( $input['resource_mapping'] ) && ! empty( $input['resource_mapping'] ) )
+		$output['resource_mapping'] = wp_filter_post_kses( $input['resource_mapping'] );
+
+
+	
+
+	
+	
+	// Checkboxes will only be present if checked.
+	if ( isset( $input['sample_checkbox'] ) )
+		$output['sample_checkbox'] = 'on';
+
+	// The sample text input must be safe text with no HTML tags
+	if ( isset( $input['sample_text_input'] ) && ! empty( $input['sample_text_input'] ) )
+		$output['sample_text_input'] = wp_filter_nohtml_kses( $input['sample_text_input'] );
+
+
+
+	// The sample select option must actually be in the array of select options
+	if ( isset( $input['sample_select_options'] ) && array_key_exists( $input['sample_select_options'], _s_sample_select_options() ) )
+		$output['sample_select_options'] = $input['sample_select_options'];
+
+	// The sample radio button value must be in our array of radio button values
+	if ( isset( $input['sample_radio_buttons'] ) && array_key_exists( $input['sample_radio_buttons'], _s_sample_radio_buttons() ) )
+		$output['sample_radio_buttons'] = $input['sample_radio_buttons'];
+
+	// The sample textarea must be safe text with the allowed tags for posts
+	if ( isset( $input['sample_textarea'] ) && ! empty( $input['sample_textarea'] ) )
+		$output['sample_textarea'] = wp_filter_post_kses( $input['sample_textarea'] );
+
+	return apply_filters( '_s_theme_options_validate', $output, $input );
+}
+
+
+
+
+
+/* 
+// Using the Theme Settings in Our Theme
+// http://code.tutsplus.com/articles/using-the-settings-api-part-1-create-a-theme-options-page--wp-21066
+Our settings were saved in a single array with the option name wptuts_options. To retrieve them we call get_option('wptuts_options'). As you can see this is done inside our wptuts_get_global_options() fuction whose output is collected in the $wptuts_option variable.
+
+Note: If you feel that the wptuts_get_global_options() function is somewhat redundant, don't. It's use will make more sense once you go through Part Two of this series.
+
+Echo a particular option in any of your theme templates like this: <?php echo $wptuts_option['wptuts_txt_input']; ?> - the value in the brackets is the id of the option you want to display.
+
+
+
+*/
+
+
+/**
+ * Collects our theme options
+ *
+ * @return array
+
+function wptuts_get_global_options(){
+     
+    $wptuts_option = array();
+ 
+    $wptuts_option  = get_option('wptuts_options');
+     
+return $wptuts_option;
+}
+  */
+ /**
+ * Call the function and collect in variable
+ *
+ * Should be used in template files like this:
+ * <?php echo $wptuts_option['wptuts_txt_input']; ?>
+ *
+ * Note: Should you notice that the variable ($wptuts_option) is empty when used in certain templates such as header.php, sidebar.php and footer.php
+ * you will need to call the function (copy the line below and paste it) at the top of those documents (within php tags)!
+$wptuts_option = wptuts_get_global_options();
+ */
