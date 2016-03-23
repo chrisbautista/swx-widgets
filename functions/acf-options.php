@@ -1,12 +1,4 @@
 <?php
-// ACF Options page
-// http://www.advancedcustomfields.com/resources/options-page/
-
-if( function_exists('acf_add_options_page') ) {
-	
-//	acf_add_options_page();
-	
-}
 
 /* 
    Debug preview with custom fields 
