@@ -1,11 +1,13 @@
 <?php
 if(!is_post_type_defined('dlm_download')) die();
+
 class CLASS_DLM_Post_Type_Manager {
 
 	/**
 	 * Setup hooks
 	 */
 	public function setup() {
+
 		add_action('init', array($this, 'register'), 11);
 		//var_log('API');
 		add_action('rest_api_init', array($this, 'register_api_custom_fields'));
@@ -15,7 +17,7 @@ class CLASS_DLM_Post_Type_Manager {
 		add_action('admin_init', array(&$this, 'admin_init'));
 
 		add_action('edit_form_after_title', array(&$this, 'edit_form_after_title_manager'));
-
+		add_action('admin_head', array(&$this, 'disable_icl_metabox'),99);
 		//add_action('admin_print_footer_scripts', array($this, 'my_publish_admin_hook'), 1000);
 
 		//add_action('wp_ajax_my_pre_submit_validation', array($this, 'pre_submit_validation'));
@@ -42,6 +44,7 @@ class CLASS_DLM_Post_Type_Manager {
 	function add_custom_metabox() {
 		// remove
 		//
+		remove_meta_box('icl_div_config', 'dlm_download', 'normal');
 		remove_meta_box('postexcerpt', 'dlm_download', 'normal');
 		remove_meta_box('download-monitor-options', 'dlm_download', 'side');
 		// Download Options
@@ -50,8 +53,12 @@ class CLASS_DLM_Post_Type_Manager {
 			'download_options',
 		), 'dlm_download', 'side', 'high');
 	}
-
-	function unregister_post_type($post_type) {
+	
+	function disable_icl_metabox() {
+	
+	remove_meta_box('icl_div_config','dlm_download','normal');
+	}
+		function unregister_post_type($post_type) {
 		global $wp_post_types;
 		if (isset($wp_post_types[$post_type])) {
 			unset($wp_post_types[$post_type]);

@@ -21,8 +21,8 @@ class CLASS_Report
 		$labels = array(
 			'name'                  => _x( 'Reports', 'Post Type General Name', 'swx_widgets' ),
 			'singular_name'         => _x( 'Report', 'Post Type Singular Name', 'swx_widgets' ),
-			'menu_name'             => __( 'Report', 'swx_widgets' ),
-			'name_admin_bar'        => __( 'Report', 'swx_widgets' ),
+			'menu_name'             => __( 'Reports', 'swx_widgets' ),
+			'name_admin_bar'        => __( 'Reports', 'swx_widgets' ),
 			'archives'              => __( 'Reports', 'swx_widgets' ),
 			'parent_item_colon'     => __( 'Parent Report:', 'swx_widgets' ),
 			'all_items'             => __( 'All Reports', 'swx_widgets' ),

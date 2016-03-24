@@ -26,8 +26,8 @@ class CLASS_Training_Event
 		$labels = array(
 			'name'                  => _x( 'Training Events', 'Post Type General Name', 'swx_widgets' ),
 			'singular_name'         => _x( 'Training Event', 'Post Type Singular Name', 'swx_widgets' ),
-			'menu_name'             => __( 'Training Event', 'swx_widgets' ),
-			'name_admin_bar'        => __( 'Training Event', 'swx_widgets' ),
+			'menu_name'             => __( 'Training Events', 'swx_widgets' ),
+			'name_admin_bar'        => __( 'Training Events', 'swx_widgets' ),
 			'archives'              => __( 'Training Events', 'swx_widgets' ),
 			'parent_item_colon'     => __( 'Parent Event:', 'swx_widgets' ),
 			'all_items'             => __( 'All Events', 'swx_widgets' ),
@@ -51,7 +51,7 @@ class CLASS_Training_Event
 			'filter_items_list'     => __( 'Filter items list', 'swx_widgets' ),
 		);
 		$args = array(
-			'label'                 => __( 'Training Event', 'swx_widgets' ),
+			'label'                 => __( 'Training Events', 'swx_widgets' ),
 			'description'           => __( 'Training Events ', 'swx_widgets' ),
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'author', 'thumbnail',  ),

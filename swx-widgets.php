@@ -66,7 +66,7 @@ require_once (SWX_FILEPATH . '/functions/post-type-training-course.php');
 require_once (SWX_FILEPATH . '/functions/post-type-training-event.php');
 require_once (SWX_FILEPATH . '/functions/post-type-report.php');
 require_once (SWX_FILEPATH . '/functions/post-type-location.php');
-//require_once (SWX_FILEPATH . '/functions/class-dlm-modify-post-type.php');
+require_once (SWX_FILEPATH . '/functions/class-dlm-modify-post-type.php');
 
 /*-----------------------------------------------------------------------------------*/
 /*  Custom Taxonomies
@@ -77,7 +77,7 @@ require_once (SWX_FILEPATH . '/functions/taxonomy-regions.php');
 require_once (SWX_FILEPATH . '/functions/taxonomy-products.php');
 require_once (SWX_FILEPATH . '/functions/taxonomy-roles.php');
 require_once (SWX_FILEPATH . '/functions/taxonomy-platforms.php');
-//require_once (SWX_FILEPATH . '/functions/class-dlm-taxonomy-manager.php');
+require_once (SWX_FILEPATH . '/functions/class-dlm-taxonomy-manager.php');
 
 
 /*-----------------------------------------------------------------------------------*/

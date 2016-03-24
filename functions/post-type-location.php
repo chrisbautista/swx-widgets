@@ -21,8 +21,8 @@ class CLASS_Location
 		$labels = array(
 			'name'                  => _x( 'Locations', 'Post Type General Name', 'swx_widgets' ),
 			'singular_name'         => _x( 'Location', 'Post Type Singular Name', 'swx_widgets' ),
-			'menu_name'             => __( 'Location', 'swx_widgets' ),
-			'name_admin_bar'        => __( 'Location', 'swx_widgets' ),
+			'menu_name'             => __( 'Locations', 'swx_widgets' ),
+			'name_admin_bar'        => __( 'Locations', 'swx_widgets' ),
 			'archives'              => __( 'Locations', 'swx_widgets' ),
 			'parent_item_colon'     => __( 'Parent Location:', 'swx_widgets' ),
 			'all_items'             => __( 'All Locations', 'swx_widgets' ),
@@ -46,7 +46,7 @@ class CLASS_Location
 			'filter_items_list'     => __( 'Filter items list', 'swx_widgets' ),
 		);
 		$args = array(
-			'label'                 => __( 'Location', 'swx_widgets' ),
+			'label'                 => __( 'Locations', 'swx_widgets' ),
 			'description'           => __( 'Locations ', 'swx_widgets' ),
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'author', 'thumbnail',  ),
